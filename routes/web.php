@@ -18,5 +18,3 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
-// WebHook service
-Route::post('/hook-me-baby-one-more-time', 'WebHookController@event');

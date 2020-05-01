@@ -13,20 +13,25 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        //events table
-        Schema::create('events', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('event-type');
-            $table->uuid('client_id');
-            $table->timestamps();
-        });
-
         //event-type type
-        Schema::create('event-type', function (Blueprint $table) {
+        Schema::create('event_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('type')->unique();
             $table->timestamps();
         });
+
+        //events table
+        Schema::create('events', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('event_id');
+            $table->uuid('client_id');
+            $table->uuid('user_id');
+            $table->timestamps();
+
+            $table->foreign('event_id')->references('id')->on('event_types')
+                ->onUpdate('cascade')->onDelete('cascade');
+        });
+
     }
 
     /**
@@ -38,5 +43,6 @@ class CreateEventsTable extends Migration
     {
         Schema::dropIfExists('events');
         Schema::dropIfExists('event-type');
+
     }
 }

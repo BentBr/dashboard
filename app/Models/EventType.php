@@ -5,13 +5,12 @@ namespace App\Models;
 use App\Models\Concerns\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class EventType extends Model
 {
     use UsesUuid;
 
-    public function eventType()
+    public function events()
     {
-        return $this->belongsTo('\App\Models\EventType');
+        return $this->hasMany('\App\Models\Event');
     }
-
 }
