@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +53,34 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+
+        //overwrite Laravel's default Method not allowed exception into our default Json
+        if ($exception instanceof MethodNotAllowedHttpException){
+
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'method not allowed',
+            ], 405);
+        }
+
+        //overwrite Laravel's default Method not allowed exception into our default Json
+        if ($exception instanceof NotFoundHttpException){
+
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'not found',
+            ], 404);
+        }
+
+        //overwrite Laravel's default Method not allowed exception into our default Json
+        if ($exception instanceof UnprocessableEntityHttpException){
+
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'cannot process data',
+            ], 422);
+        }
+
         return parent::render($request, $exception);
     }
 }
