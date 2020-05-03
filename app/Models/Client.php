@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Exception;
 
@@ -81,9 +82,11 @@ class Client extends Model
                 //counting and saving results into $client object for both defined events
                 $client->count_visits = count(Event::where('client_id', $client->id)
                     ->where('event_type_id', $visitEventType->id)
+                    ->whereDate('created_at', Carbon::today())
                     ->get());
                 $client->count_login = count(Event::where('client_id', $client->id)
                     ->where('event_type_id', $loginEventType->id)
+                    ->whereDate('created_at', Carbon::today())
                     ->get());
             }
 
