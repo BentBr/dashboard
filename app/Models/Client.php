@@ -57,7 +57,7 @@ class Client extends Model
      *
      * @return Client[]|Exception|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse
      */
-    public static function getAllClientsWithLoginVisitEventsCount()
+    public static function getAllClientsWithLoginVisitEventsCountToday()
     {
         try {
 

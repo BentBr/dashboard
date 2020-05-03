@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function renderBrashboard()
     {
 
-        $data['clients'] = Client::getAllClientsWithLoginVisitEventsCount();
+        $data['clients'] = Client::getAllClientsWithLoginVisitEventsCountToday();
 
 
         return view('BRashboard', $data);
