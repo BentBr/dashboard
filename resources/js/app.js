@@ -20,6 +20,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('card-component', require('./components/CardComponent.vue').default);
+Vue.component('reload-component', require('./components/ReloadComponent').default);
 
 import Vuetify, {
     VContainer,
@@ -29,7 +30,11 @@ import Vuetify, {
     VCard,
     VCardTitle,
     VCardText,
-    VSnackbar
+    VSnackbar,
+    VHover,
+    VBtn,
+    VLayout,
+    VFlex
 } from 'vuetify/lib'
 
 Vue.use(Vuetify, {
@@ -41,7 +46,11 @@ Vue.use(Vuetify, {
         VCard,
         VCardTitle,
         VCardText,
-        VSnackbar
+        VSnackbar,
+        VHover,
+        VBtn,
+        VLayout,
+        VFlex,
     }
 })
 

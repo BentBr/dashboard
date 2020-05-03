@@ -15,8 +15,29 @@
     <body>
         <v-app id="app">
             <v-content>
-                <card-component></card-component>
+                <reload-component></reload-component>
+                <v-container grid-list-md text-xs-center>
+                    <v-layout row wrap>
+                        <!-- for each client one Card component -->
+                        @if(@isset($clients))
+                            @foreach($clients as $client)
+                                <v-flex>
+                                    <card-component
+                                    :client-name="'{{ $client->name }}'"
+                                    :visit-count="'{{ $client->count_visits }}'"
+                                    :login-count="'{{ $client->count_login }}'"
+                                    ></card-component>
+                                </v-flex>
+                            @endforeach
+                        @endif
+                    </v-layout>
+                </v-container>
             </v-content>
         </v-app>
     </body>
 </html>
+
+
+
+
+
