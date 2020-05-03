@@ -28,6 +28,16 @@ class Event extends Model
     }
 
     /**
+     * Every Event has one Client
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function client()
+    {
+        return $this->belongsTo('\App\Models\Client');
+    }
+
+    /**
      * Creating an Event based on infos given. Every event is assigned to one client.
      * Users (ids in this case) are optional)
      *
