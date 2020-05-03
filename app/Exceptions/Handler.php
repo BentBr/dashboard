@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -63,12 +64,21 @@ class Handler extends ExceptionHandler
             ], 405);
         }
 
-        //overwrite Laravel's default Method not allowed exception into our default Json
+        //overwrite Laravel's default Method not found (http) exception into our default Json
         if ($exception instanceof NotFoundHttpException){
 
             return response()->json([
                 'status'    => 'error',
                 'message'   => 'not found',
+            ], 404);
+        }
+
+        //overwrite Laravel's default Method not found of model (eloquent) exception into our default Json
+        if ($exception instanceof ModelNotFoundException) {
+
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'client not found'
             ], 404);
         }
 

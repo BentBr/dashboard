@@ -23,12 +23,12 @@ class CreateEventsTable extends Migration
         //events table
         Schema::create('events', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('event_id');
+            $table->uuid('event_type_id');
             $table->uuid('client_id');
-            $table->uuid('user_id');
+            $table->uuid('user_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('event_id')->references('id')->on('event_types')
+            $table->foreign('event_type_id')->references('id')->on('event_types')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
 

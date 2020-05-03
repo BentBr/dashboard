@@ -40,13 +40,19 @@ class WebHookTest extends TestCase
         //checking for status, proper response and database's content
         $response->assertStatus(201)
             ->assertJsonFragment([
-                'status'    => 'success'
+                'status'    => 'success',
                 ]
             );
         $this->assertDatabaseHas('clients', [
             'name'  => $clientName
             ]
         );
+    }
+
+    //todo:
+    public function testInitialiseNewClientEventViaWebHook()
+    {
+
     }
 
     /**
@@ -75,10 +81,27 @@ class WebHookTest extends TestCase
             );
     }
 
-    //todo:
+    /**
+     * Checks if not existing event leads to proper error
+     *
+     * @return void
+     * @group fail
+     */
     public function testFailWrongEvent()
     {
+        $response = $this->withHeaders([
+            'Authorization'     => config('authorizations.keys')[0],    //using first one (test)
+            'Event'             => 'not_existing_one'
+        ])->postJson(
+            '/api/hook-me-baby-one-more-time');
 
+        //checking for status, proper response
+        $response->assertStatus(404)
+            ->assertJsonFragment([
+                    'status'    => 'error',
+                    'message'   => 'Event not found'
+                ]
+            );
     }
 
     /**
@@ -157,21 +180,58 @@ class WebHookTest extends TestCase
     }
 
     /**
+     * Checking if Clients can only be inserted once to have than data validation going off
+     *
+     * @return void
+     * @group fail
+     */
+    public function testFailCreateDuplicateClient()
+    {
+        //Client Setup
+        $clientName = $this->faker->unique()->firstNameFemale;
+        $client = Client::createNewClientWithName($clientName);
+
+        //sending request with second time same name
+        $response = $this->withHeaders([
+            'Authorization'     => config('authorizations.keys')[0],        //using first one (test)
+            'Event'             => 'initialise_new_client'
+        ])->postJson(
+            '/api/hook-me-baby-one-more-time',[                     //without pub key for now
+                'name'      => $clientName
+            ]
+        );
+
+        //checking for status, proper response and database's content
+        $response->assertStatus(422)
+            ->assertJsonFragment([
+                    'message'    => 'The given data was invalid.'
+                ]
+            );
+        $this->assertDatabaseHas('clients', [
+                'name'  => $clientName
+            ]
+        );
+    }
+
+    /**
+     * Checks if new login event is being created
+     *
+     * @return void
      * @group login
      */
     public function testNewLoginEventViaWebHook()
     {
-        //client setup
-        $clientName = $this->faker->unique()->name;
-        $client_id = Client::createNewClientWithName($clientName);
+        //client + user setup
+        $clientName = $this->faker->unique()->firstNameFemale;
+        $client = Client::createNewClientWithName($clientName);
         $user_id = $this->faker->uuid;
 
         $response = $this->withHeaders([
             'Authorization'     => config('authorizations.keys')[0],        //using first one (test)
             'Event'             => 'new_login'
         ])->postJson(
-            '/api/hook-me-baby-one-more-time',[                         //without pub key for now
-                'client_id'     => $client_id,
+            '/api/hook-me-baby-one-more-time',[                             //without pub key for now
+                'client_id'     => $client->id,
                 'user_id'       => $user_id
             ]
         );
@@ -182,26 +242,77 @@ class WebHookTest extends TestCase
                     'status'    => 'success'
                 ]
             );
+
         //to make sure data has been persisted
         $this->assertDatabaseHas('events', [
                 'user_id'       => $user_id,
-                'client_id'     => $clientName
+                'client_id'     => $client->id
             ]
         );
     }
 
-    //todo:
+    /**
+     * Checks if new visit event is being created
+     *
+     * @return void
+     * @group visit
+     */
     public function testNewVisitorEventViaWebHook()
     {
-        $response = $this->post('/hook-me-baby-one-more-time');
+        //client + user setup
+        $clientName = $this->faker->unique()->firstNameFemale;
+        $client = Client::createNewClientWithName($clientName);
 
-        $response->assertStatus(201);
+        $response = $this->withHeaders([
+            'Authorization'     => config('authorizations.keys')[0],        //using first one (test)
+            'Event'             => 'new_visitor'
+        ])->postJson(
+            '/api/hook-me-baby-one-more-time',[                             //without pub key for now
+                'client_id'     => $client->id,
+            ]
+        );
 
+        //checking for status, proper response and database's content
+        $response->assertStatus(201)
+            ->assertJsonFragment([
+                    'status'    => 'success'
+                ]
+            );
+
+        //to make sure data has been persisted
+        $this->assertDatabaseHas('events', [
+                'client_id'     => $client->id
+            ]
+        );
     }
 
-    //todo:
+    /**
+     * @group fail
+     */
     public function testLoginWithWrongClient()
     {
+        //client + user setup
+        $clientName = $this->faker->unique()->firstNameFemale;
+        $client = Client::createNewClientWithName($clientName);
+        $user_id = $this->faker->uuid;
+        $fakeUuid = $this->faker->uuid;
+
+        $response = $this->withHeaders([
+            'Authorization'     => config('authorizations.keys')[0],        //using first one (test)
+            'Event'             => 'new_login'
+        ])->postJson(
+            '/api/hook-me-baby-one-more-time',[                             //without pub key for now
+                'client_id'     => $fakeUuid,
+                'user_id'       => $user_id,
+            ]
+        );
+
+        //checking for status, proper response and database's content
+        $response->assertStatus(404)
+            ->assertJsonFragment([
+                    'status'    => 'error'
+                ]
+            );
 
     }
 

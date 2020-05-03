@@ -16,20 +16,25 @@ class Client extends Model
     ];
 
     /**
-     * Creating new client with unique name
-     * On Success returns client_id
+     * Creating new client with unique (check in validation of controller) name
+     * On Success returns client object
      *
      * @param $name
-     * @return Exception
+     * @return Exception|\Illuminate\Http\JsonResponse
      */
     public static function createNewClientWithName($name)
     {
         try {
+
             $client = Client::create([
                 'name'      => $name
             ]);
 
-            return $client->id;
+            if(! $client == false) {
+
+                return $client;
+            }
+
         } catch(Exception $exception) {
 
             return $exception;
