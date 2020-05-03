@@ -49,7 +49,7 @@ class WebHookTest extends TestCase
         );
     }
 
-    //todo:
+    //todo: initialising new clients do trigger an event as well.
     public function testInitialiseNewClientEventViaWebHook()
     {
 
@@ -287,7 +287,10 @@ class WebHookTest extends TestCase
     }
 
     /**
+     * Checks if login event with not-existing client_id gets proper 404
+     *
      * @group fail
+     * @return void
      */
     public function testLoginWithWrongClient()
     {
@@ -316,7 +319,7 @@ class WebHookTest extends TestCase
 
     }
 
-    //todo:
+    //todo: should get 422 (validation)
     public function testLoginWithMalformedUserUuid()
     {
 
