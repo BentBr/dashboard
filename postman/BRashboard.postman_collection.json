@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "6603af22-4977-4990-9c9b-05f0819644b5",
+		"name": "BRashboard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "initialise client",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {},
+				"followRedirects": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Event",
+						"value": "initialise_new_client",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "TestKey12345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"uiuuaeaeae\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/api/hook-me-baby-one-more-time",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"hook-me-baby-one-more-time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "TestKey12345",
+						"type": "text"
+					},
+					{
+						"key": "Event",
+						"value": "new_login",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\":\"6bab6360-dfdd-4818-bf1e-fea6234663fb\",\n    \"client_id\":\"23720206-4bde-49cf-846c-e3266fb6ff3e\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/api/hook-me-baby-one-more-time",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"hook-me-baby-one-more-time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new visit",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "TestKey12345",
+						"type": "text"
+					},
+					{
+						"key": "Event",
+						"value": "new_visitor",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"client_id\":\"23720206-4bde-49cf-846c-e3266fb6ff3e\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/api/hook-me-baby-one-more-time",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"hook-me-baby-one-more-time"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
