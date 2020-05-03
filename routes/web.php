@@ -14,7 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Default dashboard view
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', 'DashboardController@renderBrashboard')->name('home');
 
